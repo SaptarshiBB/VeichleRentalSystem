@@ -7,7 +7,7 @@ A full-stack vehicle rental platform for India built with **Vite + React**, **Ta
 ### 🔐 User Management
 - ✅ **User Registration & Validation** - Complete registration with email, phone (10-digit Indian format), and password validation
 - ✅ **JWT Authentication** - Secure token-based authentication system
-- ✅ **User Dashboard** - View booking history, profile, and payment status
+- ✅ **User Dashboard** - View booking history, profile, and payment status.
 
 ### 🚗 Vehicle Browsing & Filtering
 - ✅ **70+ Vehicles** - Cars, SUVs, trucks, buses, and traveller vehicles
