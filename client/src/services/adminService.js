@@ -125,6 +125,34 @@ export const getCarAnalytics = async (carId) => {
   return response.data;
 };
 
+// Get contact messages
+export const getMessages = async (page = 1, limit = 20, status = '') => {
+  const response = await axios.get(
+    `${API_URL}/admin/messages?page=${page}&limit=${limit}${status ? `&status=${status}` : ''}`,
+    getAuthHeader()
+  );
+  return response.data;
+};
+
+// Update message status
+export const updateMessageStatus = async (messageId, status) => {
+  const response = await axios.patch(
+    `${API_URL}/admin/messages/${messageId}/status`,
+    { status },
+    getAuthHeader()
+  );
+  return response.data;
+};
+
+// Delete message
+export const deleteMessage = async (messageId) => {
+  const response = await axios.delete(
+    `${API_URL}/admin/messages/${messageId}`,
+    getAuthHeader()
+  );
+  return response.data;
+};
+
 export default {
   getStats,
   getUsers,
@@ -134,5 +162,8 @@ export default {
   createCar,
   updateCar,
   deleteCar,
-  getCarAnalytics
+  getCarAnalytics,
+  getMessages,
+  updateMessageStatus,
+  deleteMessage
 };

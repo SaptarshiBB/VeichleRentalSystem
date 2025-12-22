@@ -448,4 +448,122 @@ router.get('/cars/:carId/analytics', async (req, res) => {
   }
 });
 
+// @route   GET /api/admin/messages
+// @desc    Get all contact messages
+// @access  Private/Admin
+router.get('/messages', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const status = req.query.status; // filter by status (read/unread)
+
+    const ContactMessage = (await import('../models/ContactMessage.js')).default;
+    
+    const query = status ? { status } : {};
+
+    const messages = await ContactMessage.find(query)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    const total = await ContactMessage.countDocuments(query);
+    const unreadCount = await ContactMessage.countDocuments({ status: 'unread' });
+
+    res.json({
+      success: true,
+      data: {
+        messages,
+        unreadCount,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get messages error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching messages',
+      error: error.message
+    });
+  }
+});
+
+// @route   PATCH /api/admin/messages/:id/status
+// @desc    Update message status (mark as read/unread)
+// @access  Private/Admin
+router.patch('/messages/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    if (!['read', 'unread'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status. Must be "read" or "unread"'
+      });
+    }
+
+    const ContactMessage = (await import('../models/ContactMessage.js')).default;
+
+    const message = await ContactMessage.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: 'Message not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Message marked as ${status}`,
+      data: message
+    });
+  } catch (error) {
+    console.error('Update message status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating message status',
+      error: error.message
+    });
+  }
+});
+
+// @route   DELETE /api/admin/messages/:id
+// @desc    Delete contact message
+// @access  Private/Admin
+router.delete('/messages/:id', async (req, res) => {
+  try {
+    const ContactMessage = (await import('../models/ContactMessage.js')).default;
+
+    const message = await ContactMessage.findByIdAndDelete(req.params.id);
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: 'Message not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Message deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete message error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting message',
+      error: error.message
+    });
+  }
+});
+
 export default router;

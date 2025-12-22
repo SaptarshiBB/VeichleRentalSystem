@@ -69,6 +69,7 @@ export const bookingsAPI = {
   cancelBooking: (id) => api.delete(`/bookings/${id}`),
   checkAvailability: (carId, startDate, endDate) => 
     api.get(`/bookings/check-availability/${carId}?startDate=${startDate}&endDate=${endDate}`),
+  getBookedDates: (carId) => api.get(`/bookings/car/${carId}/booked-dates`),
 };
 
 // Payment API
@@ -76,6 +77,11 @@ export const paymentAPI = {
   createOrder: (bookingId) => api.post('/payment/create-order', { bookingId }),
   captureOrder: (orderId, bookingId) => api.post('/payment/capture-order', { orderId, bookingId }),
   verifyOrder: (orderId) => api.get(`/payment/verify/${orderId}`),
+};
+
+// Contact API
+export const contactAPI = {
+  sendMessage: (formData) => api.post('/contact/send', formData),
 };
 
 export default api;

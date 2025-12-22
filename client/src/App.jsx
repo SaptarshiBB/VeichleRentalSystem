@@ -23,6 +23,7 @@ import AdminUsers from './pages/AdminUsers';
 import AdminCars from './pages/AdminCars';
 import AdminActivityLogs from './pages/AdminActivityLogs';
 import AdminCarAnalytics from './pages/AdminCarAnalytics';
+import AdminMessages from './pages/AdminMessages';
 
 function App() {
   return (
@@ -105,6 +106,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminActivityLogs />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/messages"
+                element={
+                  <AdminRoute>
+                    <AdminMessages />
                   </AdminRoute>
                 }
               />

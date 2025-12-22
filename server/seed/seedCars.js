@@ -38,8 +38,8 @@ const cars = [
     pricePerDay: 65,
     available: true,
     images: [
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
-      'https://images.unsplash.com/photo-1611859266238-4b98091d9d9b?w=800'
+      'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800',
+      'https://images.unsplash.com/photo-1581540222194-0def2dda95b8?w=800'
     ],
     features: ['AWD', 'Sunroof', 'Apple CarPlay', 'Heated Seats', 'Lane Assist'],
     specifications: {
@@ -105,7 +105,7 @@ const cars = [
     available: true,
     images: [
       'https://images.unsplash.com/photo-1584345604476-8ec5f5d3e0c0?w=800',
-      'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800'
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800'
     ],
     features: ['Sport Mode', 'Premium Audio', 'Performance Tires', 'Track Apps'],
     specifications: {
@@ -170,7 +170,7 @@ const cars = [
     pricePerDay: 75,
     available: true,
     images: [
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
+      'https://images.unsplash.com/photo-1610768764270-790fbec18178?w=800',
       'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800'
     ],
     features: ['Quattro AWD', 'Virtual Cockpit', 'Premium Interior', 'LED Headlights'],
@@ -192,8 +192,8 @@ const cars = [
     pricePerDay: 80,
     available: true,
     images: [
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
-      'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800'
+      'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800',
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800'
     ],
     features: ['4x4', 'Removable Top', 'Off-Road Package', 'Winch Ready'],
     specifications: {
@@ -226,6 +226,182 @@ const cars = [
       airConditioning: true
     },
     rating: 4.9
+  },
+  {
+    brand: 'Mazda',
+    model: 'CX-5',
+    year: 2023,
+    type: 'SUV',
+    location: 'Seattle',
+    pricePerDay: 55,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1617654112368-307921291f42?w=800',
+      'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800'
+    ],
+    features: ['Skyactiv Technology', 'Blind Spot Monitoring', 'Apple CarPlay', 'Rear Cross Traffic Alert'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      mileage: '28 MPG',
+      airConditioning: true
+    },
+    rating: 4.6
+  },
+  {
+    brand: 'Nissan',
+    model: 'Altima',
+    year: 2023,
+    type: 'Sedan',
+    location: 'Phoenix',
+    pricePerDay: 42,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1623869675781-80aa31012a5a?w=800',
+      'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800'
+    ],
+    features: ['ProPILOT Assist', 'Remote Start', 'Intelligent Cruise Control', 'Dual Zone Climate'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      mileage: '32 MPG',
+      airConditioning: true
+    },
+    rating: 4.5
+  },
+  {
+    brand: 'Hyundai',
+    model: 'Tucson',
+    year: 2024,
+    type: 'SUV',
+    location: 'Atlanta',
+    pricePerDay: 58,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800',
+      'https://images.unsplash.com/photo-1621361365424-06f0e1eb5c49?w=800'
+    ],
+    features: ['Highway Driving Assist', 'Wireless Charging', 'Smart Cruise Control', 'Panoramic Sunroof'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Hybrid',
+      mileage: '38 MPG',
+      airConditioning: true
+    },
+    rating: 4.7
+  },
+  {
+    brand: 'Porsche',
+    model: '911',
+    year: 2024,
+    type: 'Sports',
+    location: 'Miami',
+    pricePerDay: 250,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800',
+      'https://images.unsplash.com/photo-1614162692292-7ac56d7f36c5?w=800'
+    ],
+    features: ['Sport Chrono Package', 'Active Suspension', 'Premium Leather', 'Sport Exhaust'],
+    specifications: {
+      seats: 4,
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      mileage: '20 MPG',
+      airConditioning: true
+    },
+    rating: 4.9
+  },
+  {
+    brand: 'Kia',
+    model: 'Sportage',
+    year: 2023,
+    type: 'SUV',
+    location: 'Dallas',
+    pricePerDay: 52,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800',
+      'https://images.unsplash.com/photo-1622353219448-46a009f0d44f?w=800'
+    ],
+    features: ['Drive Mode Select', 'Lane Keep Assist', 'Wireless CarPlay', 'Smart Key'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      mileage: '26 MPG',
+      airConditioning: true
+    },
+    rating: 4.6
+  },
+  {
+    brand: 'Lexus',
+    model: 'RX',
+    year: 2024,
+    type: 'Luxury',
+    location: 'San Diego',
+    pricePerDay: 115,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
+      'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800'
+    ],
+    features: ['Mark Levinson Audio', 'Heads-Up Display', 'Adaptive Cruise', 'Premium Leather'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Hybrid',
+      mileage: '36 MPG',
+      airConditioning: true
+    },
+    rating: 4.8
+  },
+  {
+    brand: 'Subaru',
+    model: 'Outback',
+    year: 2023,
+    type: 'SUV',
+    location: 'Portland',
+    pricePerDay: 62,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800',
+      'https://images.unsplash.com/photo-1581540222194-0def2dda95b8?w=800'
+    ],
+    features: ['EyeSight Safety', 'X-Mode', 'Roof Rails', 'All-Wheel Drive'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      mileage: '29 MPG',
+      airConditioning: true
+    },
+    rating: 4.7
+  },
+  {
+    brand: 'Range Rover',
+    model: 'Sport',
+    year: 2024,
+    type: 'Luxury',
+    location: 'Austin',
+    pricePerDay: 180,
+    available: true,
+    images: [
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800'
+    ],
+    features: ['Terrain Response', 'Air Suspension', 'Meridian Sound', 'Adaptive Dynamics'],
+    specifications: {
+      seats: 5,
+      transmission: 'Automatic',
+      fuelType: 'Diesel',
+      mileage: '24 MPG',
+      airConditioning: true
+    },
+    rating: 4.8
   }
 ];
 

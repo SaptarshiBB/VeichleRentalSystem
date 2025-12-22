@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { carsAPI, bookingsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { FaCalendar, FaMapMarkerAlt, FaCar } from 'react-icons/fa';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const Booking = () => {
   const { carId } = useParams();
@@ -25,9 +27,12 @@ const Booking = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [availabilityMessage, setAvailabilityMessage] = useState('');
+  const [bookedDates, setBookedDates] = useState([]);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   useEffect(() => {
     fetchCar();
+    fetchBookedDates();
   }, [carId]);
 
   useEffect(() => {
@@ -74,6 +79,45 @@ const Booking = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchBookedDates = async () => {
+    try {
+      const response = await bookingsAPI.getBookedDates(carId);
+      setBookedDates(response.data.data);
+    } catch (err) {
+      console.error('Failed to fetch booked dates:', err);
+    }
+  };
+
+  // Helper function to check if a date is booked
+  const isDateBooked = (date) => {
+    return bookedDates.some(booking => {
+      const start = new Date(booking.start);
+      const end = new Date(booking.end);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      date.setHours(0, 0, 0, 0);
+      return date >= start && date <= end;
+    });
+  };
+
+  // Tile class name for calendar
+  const tileClassName = ({ date, view }) => {
+    if (view === 'month') {
+      if (isDateBooked(date)) {
+        return 'booked-date';
+      }
+    }
+    return null;
+  };
+
+  // Disable booked dates
+  const tileDisabled = ({ date, view }) => {
+    if (view === 'month') {
+      return isDateBooked(date);
+    }
+    return false;
   };
 
   const calculatePrice = () => {
@@ -207,6 +251,45 @@ const Booking = () => {
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 />
+              </div>
+
+              {/* Calendar Availability View */}
+              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <button
+                  type="button"
+                  onClick={() => setShowCalendar(!showCalendar)}
+                  className="w-full flex items-center justify-between text-left font-semibold text-gray-700 mb-2"
+                >
+                  <span className="flex items-center">
+                    <FaCalendar className="mr-2" />
+                    {showCalendar ? 'Hide' : 'Show'} Availability Calendar
+                  </span>
+                  <span className="text-2xl">{showCalendar ? '−' : '+'}</span>
+                </button>
+                
+                {showCalendar && (
+                  <div className="mt-4">
+                    <div className="mb-3 flex items-center justify-between text-sm">
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                        <span>Booked</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 bg-white border border-gray-300 rounded mr-2"></div>
+                        <span>Available</span>
+                      </div>
+                    </div>
+                    <Calendar
+                      tileClassName={tileClassName}
+                      tileDisabled={tileDisabled}
+                      minDate={new Date()}
+                      className="w-full border-0"
+                    />
+                    <p className="text-xs text-gray-600 mt-3">
+                      Red dates are already booked and cannot be selected.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Availability Message */}

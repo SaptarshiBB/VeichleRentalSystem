@@ -110,7 +110,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Link
             to="/admin/users"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
@@ -134,6 +134,21 @@ const AdminDashboard = () => {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Manage Cars</h3>
                 <p className="text-gray-600 mt-1">Add, edit, or remove cars</p>
+              </div>
+              <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/messages"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Messages</h3>
+                <p className="text-gray-600 mt-1">View customer inquiries</p>
               </div>
               <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

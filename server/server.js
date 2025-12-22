@@ -11,6 +11,7 @@ import carRoutes from './routes/cars.js';
 import bookingRoutes from './routes/bookings.js';
 import paymentRoutes from './routes/payment.js';
 import adminRoutes from './routes/admin.js';
+import contactRoutes from './routes/contact.js';
 
 // Load environment variables
 dotenv.config();
@@ -46,6 +47,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

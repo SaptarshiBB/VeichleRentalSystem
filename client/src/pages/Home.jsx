@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaCar, FaCheckCircle, FaClock, FaShieldAlt, FaArrowRight, FaUserCircle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import FAQ from '../components/FAQ';
 
 const Home = () => {
   const { user } = useAuth();
@@ -147,6 +148,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <FAQ />
+
       {/* CTA Section */}
       <section className="w-full py-16 bg-gradient-to-r from-primary-700 to-primary-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -169,3 +173,4 @@ const Home = () => {
 };
 
 export default Home;
+

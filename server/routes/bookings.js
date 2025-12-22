@@ -81,6 +81,39 @@ router.get('/check-availability/:carId', async (req, res) => {
   }
 });
 
+// @route   GET /api/bookings/car/:carId/booked-dates
+// @desc    Get all booked dates for a car (for calendar visualization)
+// @access  Public
+router.get('/car/:carId/booked-dates', async (req, res) => {
+  try {
+    const { carId } = req.params;
+
+    // Find all active bookings for this car
+    const bookings = await Booking.find({
+      car: carId,
+      status: { $in: ['pending', 'confirmed', 'active'] }
+    }).select('startDate endDate');
+
+    // Return array of date ranges
+    const bookedDates = bookings.map(booking => ({
+      start: booking.startDate,
+      end: booking.endDate
+    }));
+
+    res.json({
+      success: true,
+      data: bookedDates
+    });
+  } catch (error) {
+    console.error('Get booked dates error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+});
+
 // @route   POST /api/bookings
 // @desc    Create a new booking
 // @access  Private
