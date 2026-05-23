@@ -2,6 +2,10 @@
 
 A full-stack vehicle rental platform for India built with **Vite + React**, **Tailwind CSS**, **Node.js**, **Express**, and **WebSockets**. Rent cars, SUVs, trucks, buses, and traveller vehicles across major Indian cities.
 
+## Live Demo
+
+Frontend: https://veichle-rental-system.vercel.app/
+
 ## 🚀 Key Features
 
 ### 🔐 User Management
