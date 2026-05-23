@@ -98,7 +98,7 @@ const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">₹{stats?.totalRevenue?.toLocaleString() || 0}</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">Rs. {stats?.totalRevenue?.toLocaleString() || 0}</p>
               </div>
               <div className="bg-yellow-100 rounded-full p-3">
                 <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +235,7 @@ const AdminDashboard = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        ₹{booking.totalPrice?.toLocaleString()}
+                        Rs. {booking.totalPrice?.toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(booking.createdAt).toLocaleDateString()}
@@ -260,7 +260,7 @@ const AdminDashboard = () => {
             to="/"
             className="text-primary-600 hover:text-primary-700 font-medium"
           >
-            ← Back to Main Site
+            Back to Main Site
           </Link>
         </div>
       </div>

@@ -2,6 +2,8 @@ import express from 'express';
 import { cars, findCarById } from '../data/store.js';
 import { protect, admin } from '../middleware/auth.js';
 import Booking from '../models/Booking.js';
+import { usingMemoryStore } from '../config/database.js';
+import { findBookings } from '../data/store.js';
 
 const router = express.Router();
 
@@ -66,7 +68,9 @@ router.get('/', async (req, res) => {
     // Filter by date availability if dates are provided
     if (startDate && endDate) {
       // Get all active bookings
-      const allBookings = await Booking.find({
+      const allBookings = usingMemoryStore() ? findBookings({
+        status: { $in: ['pending', 'confirmed', 'active'] }
+      }) : await Booking.find({
         status: { $in: ['pending', 'confirmed', 'active'] }
       });
 

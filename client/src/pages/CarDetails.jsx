@@ -44,7 +44,7 @@ const CarDetails = () => {
 
   const handleBookNow = () => {
     if (!isAuthenticated) {
-      alert('Please sign in to book this vehicle! 🚗\n\nYou will be redirected to the login page.');
+      alert('Please sign in to book this vehicle. You will be redirected to the login page.');
       navigate('/login', { state: { from: `/booking/${id}` } });
     } else {
       navigate(`/booking/${id}`);
@@ -65,7 +65,7 @@ const CarDetails = () => {
         <div className="text-center">
           <p className="text-red-600 text-xl mb-4">{error || 'Car not found'}</p>
           <Link to="/cars" className="text-primary-600 hover:text-primary-700 font-semibold">
-            ← Back to Cars
+            Back to Cars
           </Link>
         </div>
       </div>
@@ -186,7 +186,7 @@ const CarDetails = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-gray-600 text-sm">Price per day</p>
-                  <p className="text-4xl font-bold text-primary-600">₹{car.pricePerDay}</p>
+                  <p className="text-4xl font-bold text-primary-600">Rs. {car.pricePerDay}</p>
                 </div>
               </div>
 

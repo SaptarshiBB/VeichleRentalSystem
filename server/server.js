@@ -1,9 +1,12 @@
 import express from 'express';
 import { createServer } from 'http';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import { initWebSocket } from './websocket/index.js';
+import { seedDefaultUsers } from './data/store.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -14,21 +17,33 @@ import adminRoutes from './routes/admin.js';
 import contactRoutes from './routes/contact.js';
 
 // Load environment variables
-dotenv.config();
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, '.env') });
 
 // Initialize Express app
 const app = express();
 const server = createServer(app);
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://127.0.0.1:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 // Connect to MongoDB
-connectDB();
+await connectDB();
+await seedDefaultUsers();
 
 // Initialize WebSocket
 initWebSocket(server);
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error(`CORS blocked origin: ${origin}`));
+  },
   credentials: true
 }));
 
@@ -97,23 +112,33 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. The backend is probably already running at http://localhost:${PORT}`);
+    process.exit(0);
+  }
+
+  console.error('Server startup error:', err);
+  process.exit(1);
+});
+
 server.listen(PORT, () => {
   console.log('');
-  console.log('🚗 ========================================');
-  console.log('🚗  Car Rental Platform Server');
-  console.log('🚗 ========================================');
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📡 WebSocket server active`);
-  console.log(`🔗 API URL: http://localhost:${PORT}`);
-  console.log(`🔗 Health Check: http://localhost:${PORT}/api/health`);
-  console.log('🚗 ========================================');
+  console.log('========================================');
+  console.log('Car Rental Platform Server');
+  console.log('========================================');
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log('WebSocket server active');
+  console.log(`API URL: http://localhost:${PORT}`);
+  console.log(`Health Check: http://localhost:${PORT}/api/health`);
+  console.log('========================================');
   console.log('');
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.error('❌ Unhandled Promise Rejection:', err);
+  console.error('Unhandled Promise Rejection:', err);
   // Close server & exit process
   server.close(() => process.exit(1));
 });

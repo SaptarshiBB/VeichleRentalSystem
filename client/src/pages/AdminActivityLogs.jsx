@@ -53,11 +53,11 @@ const AdminActivityLogs = () => {
 
   const getActionIcon = (action) => {
     const icons = {
-      login: '🔓',
-      logout: '🔒',
-      register: '✨'
+      login: 'Login',
+      logout: 'Logout',
+      register: 'Register'
     };
-    return icons[action] || '📝';
+    return icons[action] || 'Activity';
   };
 
   return (
@@ -74,7 +74,7 @@ const AdminActivityLogs = () => {
               to="/admin"
               className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
             >
-              ← Back to Dashboard
+              Back to Dashboard
             </Link>
           </div>
         </div>

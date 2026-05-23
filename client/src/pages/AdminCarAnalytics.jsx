@@ -70,7 +70,7 @@ const AdminCarAnalytics = () => {
             {error}
           </div>
           <Link to="/admin/cars" className="mt-4 inline-block text-primary-600 hover:text-primary-700">
-            ← Back to Cars
+            Back to Cars
           </Link>
         </div>
       </div>
@@ -97,8 +97,8 @@ const AdminCarAnalytics = () => {
               <h1 className="text-3xl font-bold text-gray-900">
                 {car.brand} {car.model}
               </h1>
-              <p className="text-gray-600">{car.type} • {car.location}</p>
-              <p className="text-primary-600 font-semibold">₹{car.pricePerDay}/day</p>
+              <p className="text-gray-600">{car.type} - {car.location}</p>
+              <p className="text-primary-600 font-semibold">Rs. {car.pricePerDay}/day</p>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ const AdminCarAnalytics = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Revenue</p>
                 <p className="text-2xl font-bold text-green-600 mt-2">
-                  ₹{analytics.totalRevenue.toLocaleString()}
+                  Rs. {analytics.totalRevenue.toLocaleString()}
                 </p>
               </div>
               <div className="bg-green-100 rounded-full p-3">
@@ -167,7 +167,7 @@ const AdminCarAnalytics = () => {
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm font-medium text-gray-600">Pending Revenue</p>
             <p className="text-xl font-bold text-yellow-600 mt-2">
-              ₹{analytics.pendingRevenue.toLocaleString()}
+              Rs. {analytics.pendingRevenue.toLocaleString()}
             </p>
           </div>
 
@@ -181,7 +181,7 @@ const AdminCarAnalytics = () => {
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm font-medium text-gray-600">Average Booking Value</p>
             <p className="text-xl font-bold text-gray-900 mt-2">
-              ₹{Math.round(analytics.averageBookingValue).toLocaleString()}
+              Rs. {Math.round(analytics.averageBookingValue).toLocaleString()}
             </p>
           </div>
         </div>
@@ -253,7 +253,7 @@ const AdminCarAnalytics = () => {
                         {booking.totalDays} day{booking.totalDays !== 1 ? 's' : ''}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        ₹{booking.totalPrice.toLocaleString()}
+                        Rs. {booking.totalPrice.toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(booking.status)}`}>

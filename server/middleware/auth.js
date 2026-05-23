@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { usingMemoryStore } from '../config/database.js';
+import { findUserById } from '../data/store.js';
 
 export const protect = async (req, res, next) => {
   let token;
@@ -19,7 +21,9 @@ export const protect = async (req, res, next) => {
       console.log('✅ Token verified, user ID:', decoded.id);
 
       // Get user from token (exclude password)
-      const user = await User.findById(decoded.id).select('-password');
+      const user = usingMemoryStore()
+        ? findUserById(decoded.id)
+        : await User.findById(decoded.id).select('-password');
 
       if (!user) {
         console.log('❌ User not found in database for ID:', decoded.id);

@@ -72,7 +72,7 @@ export const deleteUser = async (userId) => {
 
 // Get all cars (admin view)
 export const getCars = async () => {
-  console.log('🚗 Fetching cars from admin endpoint...');
+  console.log('Fetching cars from admin endpoint...');
   console.log('Request URL:', `${API_URL}/admin/cars`);
   console.log('Auth header:', getAuthHeader());
   

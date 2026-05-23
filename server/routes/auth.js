@@ -4,6 +4,14 @@ import User from '../models/User.js';
 import ActivityLog from '../models/ActivityLog.js';
 import { registerValidation, loginValidation, validate } from '../middleware/validation.js';
 import { protect } from '../middleware/auth.js';
+import { usingMemoryStore } from '../config/database.js';
+import {
+  comparePassword,
+  createActivityLog,
+  createUser,
+  findUserByEmail,
+  findUserById
+} from '../data/store.js';
 
 const router = express.Router();
 
@@ -14,6 +22,23 @@ const generateToken = (id) => {
   });
 };
 
+const publicUser = (user) => ({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  phone: user.phone,
+  role: user.role,
+  token: generateToken(user._id)
+});
+
+const logAuthActivity = async (data) => {
+  if (usingMemoryStore()) {
+    createActivityLog(data);
+    return;
+  }
+  await ActivityLog.create(data);
+};
+
 // @route   POST /api/auth/register
 // @desc    Register a new user
 // @access  Public
@@ -22,7 +47,9 @@ router.post('/register', registerValidation, validate, async (req, res) => {
     const { name, email, password, phone } = req.body;
 
     // Check if user already exists
-    const userExists = await User.findOne({ email });
+    const userExists = usingMemoryStore()
+      ? findUserByEmail(email)
+      : await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ 
         success: false, 
@@ -31,7 +58,12 @@ router.post('/register', registerValidation, validate, async (req, res) => {
     }
 
     // Create user
-    const user = await User.create({
+    const user = usingMemoryStore() ? await createUser({
+      name,
+      email,
+      password,
+      phone
+    }) : await User.create({
       name,
       email,
       password,
@@ -40,7 +72,7 @@ router.post('/register', registerValidation, validate, async (req, res) => {
 
     if (user) {
       // Log registration activity
-      await ActivityLog.create({
+      await logAuthActivity({
         user: user._id,
         action: 'register',
         email: user.email,
@@ -52,14 +84,7 @@ router.post('/register', registerValidation, validate, async (req, res) => {
       res.status(201).json({
         success: true,
         message: 'User registered successfully',
-        data: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          token: generateToken(user._id)
-        }
+        data: publicUser(user)
       });
     }
   } catch (error) {
@@ -82,7 +107,9 @@ router.post('/login', loginValidation, validate, async (req, res) => {
     console.log('🔐 Login attempt for email:', email);
 
     // Find user by email and include password field
-    const user = await User.findOne({ email }).select('+password');
+    const user = usingMemoryStore()
+      ? findUserByEmail(email)
+      : await User.findOne({ email }).select('+password');
 
     if (!user) {
       console.log('❌ User not found for email:', email);
@@ -95,7 +122,9 @@ router.post('/login', loginValidation, validate, async (req, res) => {
     console.log('✅ User found:', user.email);
 
     // Check password using User model method
-    const isPasswordMatch = await user.matchPassword(password);
+    const isPasswordMatch = usingMemoryStore()
+      ? await comparePassword(password, user.password)
+      : await user.matchPassword(password);
 
     console.log('🔑 Password match result:', isPasswordMatch);
 
@@ -110,7 +139,7 @@ router.post('/login', loginValidation, validate, async (req, res) => {
     console.log('✅ Login successful for user:', email);
 
     // Log login activity
-    await ActivityLog.create({
+    await logAuthActivity({
       user: user._id,
       action: 'login',
       email: user.email,
@@ -122,14 +151,7 @@ router.post('/login', loginValidation, validate, async (req, res) => {
     res.json({
       success: true,
       message: 'Login successful',
-      data: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        token: generateToken(user._id)
-      }
+      data: publicUser(user)
     });
   } catch (error) {
     console.error('❌ Login error:', error);
@@ -147,7 +169,7 @@ router.post('/login', loginValidation, validate, async (req, res) => {
 router.post('/logout', protect, async (req, res) => {
   try {
     // Log logout activity
-    await ActivityLog.create({
+    await logAuthActivity({
       user: req.user._id,
       action: 'logout',
       email: req.user.email,
@@ -175,7 +197,9 @@ router.post('/logout', protect, async (req, res) => {
 // @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = usingMemoryStore()
+      ? findUserById(req.user._id)
+      : await User.findById(req.user._id);
     
     if (!user) {
       return res.status(404).json({

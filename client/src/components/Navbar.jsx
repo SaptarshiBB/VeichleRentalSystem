@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaCar, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaBars, FaCar, FaTimes, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaTools } from 'react-icons/fa';
 import { useState } from 'react';
 
 const Navbar = () => {
@@ -15,40 +15,40 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-primary-700 via-primary-600 to-primary-500 shadow-xl sticky top-0 z-50">
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-22 py-3">
+    <nav className="bg-primary-700 shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center min-h-16 py-3 gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <FaCar className="text-white text-5xl group-hover:scale-110 transition-transform" />
-            <span className="text-white font-bold text-3xl hidden sm:block">
+            <FaCar className="text-white text-3xl group-hover:scale-105 transition-transform" />
+            <span className="text-white font-bold text-2xl hidden sm:block">
               Car<span className="text-accent-300">Yatra</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-5">
             <Link
               to="/"
-              className="text-white hover:text-accent-200 font-semibold text-lg transition-colors"
+              className="text-white hover:text-accent-200 font-semibold text-sm lg:text-base transition-colors"
             >
               Home
             </Link>
             <Link
               to="/cars"
-              className="text-white hover:text-accent-200 font-semibold text-lg transition-colors"
+              className="text-white hover:text-accent-200 font-semibold text-sm lg:text-base transition-colors"
             >
               Browse Vehicles
             </Link>
             <Link
               to="/contact"
-              className="text-white hover:text-accent-200 font-semibold text-lg transition-colors"
+              className="text-white hover:text-accent-200 font-semibold text-sm lg:text-base transition-colors"
             >
               Contact Us
             </Link>
             <Link
               to="/about"
-              className="text-white hover:text-accent-200 font-semibold text-lg transition-colors"
+              className="text-white hover:text-accent-200 font-semibold text-sm lg:text-base transition-colors"
             >
               About Us
             </Link>
@@ -56,9 +56,10 @@ const Navbar = () => {
             {isAuthenticated && user?.role === 'admin' && (
               <Link
                 to="/admin"
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold text-lg transition-all shadow-md hover:shadow-lg"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold text-sm lg:text-base transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2"
               >
-                🔧 Admin Panel
+                <FaTools />
+                <span>Admin Panel</span>
               </Link>
             )}
 
@@ -66,14 +67,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/dashboard"
-                  className="text-white hover:text-accent-200 font-semibold text-lg transition-colors flex items-center space-x-2"
+                  className="text-white hover:text-accent-200 font-semibold text-sm lg:text-base transition-colors flex items-center space-x-2 max-w-40"
                 >
                   <FaUser className="text-lg" />
-                  <span>{user?.name}</span>
+                  <span className="truncate">{user?.name}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold text-lg flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm lg:text-base flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
                 >
                   <FaSignOutAlt className="text-lg" />
                   <span>Logout</span>
@@ -83,14 +84,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-white text-primary-700 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold text-lg flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
+                  className="bg-white text-primary-700 hover:bg-gray-100 px-4 py-2 rounded-lg font-semibold text-sm lg:text-base flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
                 >
                   <FaSignInAlt className="text-lg" />
                   <span>Login</span>
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold text-lg flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
+                  className="bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg font-semibold text-sm lg:text-base flex items-center space-x-2 transition-all shadow-md hover:shadow-lg"
                 >
                   <FaUserPlus className="text-lg" />
                   <span>Sign Up</span>
@@ -102,23 +103,10 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-white focus:outline-none p-2 rounded-lg"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
-            <svg
-              className="h-8 w-8"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {mobileMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            {mobileMenuOpen ? <FaTimes className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
           </button>
         </div>
 
@@ -159,9 +147,10 @@ const Navbar = () => {
                 <Link
                   to="/admin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-semibold text-lg transition-all"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-semibold text-lg transition-all inline-flex items-center justify-center gap-2"
                 >
-                  🔧 Admin Panel
+                  <FaTools />
+                  <span>Admin Panel</span>
                 </Link>
               )}
 

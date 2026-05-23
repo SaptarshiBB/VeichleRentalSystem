@@ -1,8 +1,17 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
-import { findCarById, cars } from '../data/store.js';
+import {
+  createBooking,
+  deleteBooking,
+  findBookingById,
+  findBookings,
+  findCarById,
+  cars,
+  updateBooking
+} from '../data/store.js';
 import { protect } from '../middleware/auth.js';
 import { bookingValidation, validate } from '../middleware/validation.js';
+import { usingMemoryStore } from '../config/database.js';
 
 const router = express.Router();
 
@@ -42,7 +51,10 @@ router.get('/check-availability/:carId', async (req, res) => {
     }
 
     // Find all active bookings for this car
-    const existingBookings = await Booking.find({
+    const existingBookings = usingMemoryStore() ? findBookings({
+      car: carId,
+      status: { $in: ['pending', 'confirmed', 'active'] }
+    }) : await Booking.find({
       car: carId,
       status: { $in: ['pending', 'confirmed', 'active'] }
     });
@@ -89,7 +101,10 @@ router.get('/car/:carId/booked-dates', async (req, res) => {
     const { carId } = req.params;
 
     // Find all active bookings for this car
-    const bookings = await Booking.find({
+    const bookings = usingMemoryStore() ? findBookings({
+      car: carId,
+      status: { $in: ['pending', 'confirmed', 'active'] }
+    }) : await Booking.find({
       car: carId,
       status: { $in: ['pending', 'confirmed', 'active'] }
     }).select('startDate endDate');
@@ -153,7 +168,10 @@ router.post('/', protect, bookingValidation, validate, async (req, res) => {
     const totalPrice = totalDays * car.pricePerDay;
 
     // Check for date conflicts with existing bookings
-    const existingBookings = await Booking.find({
+    const existingBookings = usingMemoryStore() ? findBookings({
+      car: carId,
+      status: { $in: ['pending', 'confirmed', 'active'] }
+    }) : await Booking.find({
       car: carId,
       status: { $in: ['pending', 'confirmed', 'active'] }
     });
@@ -175,8 +193,7 @@ router.post('/', protect, bookingValidation, validate, async (req, res) => {
       });
     }
 
-    // Create booking in MongoDB
-    const booking = await Booking.create({
+    const bookingData = {
       user: req.user._id,
       car: carId,
       startDate,
@@ -187,11 +204,15 @@ router.post('/', protect, bookingValidation, validate, async (req, res) => {
       totalPrice,
       status: 'pending',
       paymentStatus: 'pending'
-    });
+    };
+
+    const booking = usingMemoryStore()
+      ? createBooking(bookingData)
+      : await Booking.create(bookingData);
 
     // Add car and user details to response
     const bookingWithDetails = {
-      ...booking.toObject(),
+      ...(booking.toObject ? booking.toObject() : booking),
       car: car,
       user: {
         _id: req.user._id,
@@ -228,11 +249,13 @@ router.get('/user/:userId', protect, async (req, res) => {
       });
     }
 
-    const bookings = await Booking.find({ user: req.params.userId }).sort({ createdAt: -1 });
+    const bookings = usingMemoryStore()
+      ? findBookings({ user: req.params.userId }).sort((a, b) => b.createdAt - a.createdAt)
+      : await Booking.find({ user: req.params.userId }).sort({ createdAt: -1 });
     
     // Add car details to each booking
     const bookingsWithDetails = bookings.map(booking => ({
-      ...booking.toObject(),
+      ...(booking.toObject ? booking.toObject() : booking),
       car: findCarById(booking.car)
     }));
 
@@ -256,7 +279,9 @@ router.get('/user/:userId', protect, async (req, res) => {
 // @access  Private
 router.get('/:id', protect, async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id);
+    const booking = usingMemoryStore()
+      ? findBookingById(req.params.id)
+      : await Booking.findById(req.params.id);
 
     if (!booking) {
       return res.status(404).json({ 
@@ -275,7 +300,7 @@ router.get('/:id', protect, async (req, res) => {
 
     // Add car and user details
     const bookingWithDetails = {
-      ...booking.toObject(),
+      ...(booking.toObject ? booking.toObject() : booking),
       car: findCarById(booking.car),
       user: {
         _id: req.user._id,
@@ -303,7 +328,9 @@ router.get('/:id', protect, async (req, res) => {
 // @access  Private
 router.put('/:id', protect, async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id);
+    const booking = usingMemoryStore()
+      ? findBookingById(req.params.id)
+      : await Booking.findById(req.params.id);
 
     if (!booking) {
       return res.status(404).json({ 
@@ -323,12 +350,15 @@ router.put('/:id', protect, async (req, res) => {
     // Update allowed fields
     const { status, paymentStatus, paypalOrderId, paypalPaymentId } = req.body;
     
-    if (status) booking.status = status;
-    if (paymentStatus) booking.paymentStatus = paymentStatus;
-    if (paypalOrderId) booking.paypalOrderId = paypalOrderId;
-    if (paypalPaymentId) booking.paypalPaymentId = paypalPaymentId;
+    const updates = {};
+    if (status) updates.status = status;
+    if (paymentStatus) updates.paymentStatus = paymentStatus;
+    if (paypalOrderId) updates.paypalOrderId = paypalOrderId;
+    if (paypalPaymentId) updates.paypalPaymentId = paypalPaymentId;
 
-    const updatedBooking = await booking.save();
+    const updatedBooking = usingMemoryStore()
+      ? updateBooking(req.params.id, updates)
+      : await Object.assign(booking, updates).save();
 
     // If booking is confirmed, update car availability
     if (status === 'confirmed') {
@@ -348,7 +378,7 @@ router.put('/:id', protect, async (req, res) => {
 
     // Add car and user details
     const bookingWithDetails = {
-      ...updatedBooking.toObject(),
+      ...(updatedBooking.toObject ? updatedBooking.toObject() : updatedBooking),
       car: findCarById(updatedBooking.car),
       user: {
         _id: req.user._id,
@@ -377,7 +407,9 @@ router.put('/:id', protect, async (req, res) => {
 // @access  Private
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id);
+    const booking = usingMemoryStore()
+      ? findBookingById(req.params.id)
+      : await Booking.findById(req.params.id);
 
     if (!booking) {
       return res.status(404).json({ 
@@ -400,8 +432,11 @@ router.delete('/:id', protect, async (req, res) => {
       cars[carIndex].available = true;
     }
 
-    // Delete booking from MongoDB
-    await Booking.findByIdAndDelete(req.params.id);
+    if (usingMemoryStore()) {
+      deleteBooking(req.params.id);
+    } else {
+      await Booking.findByIdAndDelete(req.params.id);
+    }
 
     res.json({
       success: true,

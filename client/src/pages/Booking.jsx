@@ -55,7 +55,7 @@ const Booking = () => {
         if (!response.data.available) {
           setAvailabilityMessage(response.data.message);
         } else {
-          setAvailabilityMessage('✓ Vehicle is available for selected dates');
+          setAvailabilityMessage('Vehicle is available for selected dates');
         }
       } catch (err) {
         console.error('Availability check error:', err);
@@ -149,7 +149,7 @@ const Booking = () => {
     setSubmitting(true);
     setError('');
 
-    console.log('🚗 Booking submission started...');
+    console.log('Booking submission started...');
     console.log('Form data:', formData);
     console.log('Total days:', totalDays);
     console.log('Total price:', totalPrice);
@@ -161,20 +161,20 @@ const Booking = () => {
     }
 
     try {
-      console.log('📡 Sending booking request to API...');
+      console.log('Sending booking request to API...');
       const response = await bookingsAPI.createBooking({
         carId,
         ...formData,
       });
 
-      console.log('✅ Booking created successfully:', response.data);
+      console.log('Booking created successfully:', response.data);
       console.log('Booking ID:', response.data.data._id);
 
       // Navigate to payment page with booking ID
-      console.log('🔄 Navigating to payment page...');
+      console.log('Navigating to payment page...');
       navigate(`/payment/${response.data.data._id}`);
     } catch (err) {
-      console.error('❌ Booking creation failed:', err);
+      console.error('Booking creation failed:', err);
       console.error('Error response:', err.response);
       console.error('Error message:', err.response?.data?.message);
       
@@ -295,7 +295,7 @@ const Booking = () => {
               {/* Availability Message */}
               {(checkingAvailability || availabilityMessage) && (
                 <div className={`px-4 py-3 rounded-lg ${
-                  availabilityMessage.includes('✓') 
+                  availabilityMessage.includes('available') 
                     ? 'bg-green-50 border border-green-200 text-green-700' 
                     : availabilityMessage 
                     ? 'bg-yellow-50 border border-yellow-200 text-yellow-700'
@@ -358,7 +358,7 @@ const Booking = () => {
                 <div>
                   <h3 className="font-bold text-lg">{car.brand} {car.model}</h3>
                   <p className="text-gray-600">{car.type}</p>
-                  <p className="text-primary-600 font-semibold">₹{car.pricePerDay}/day</p>
+                  <p className="text-primary-600 font-semibold">Rs. {car.pricePerDay}/day</p>
                 </div>
               </div>
             </div>
@@ -368,7 +368,7 @@ const Booking = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-700">Price per day</span>
-                  <span className="font-semibold">₹{car.pricePerDay}</span>
+                  <span className="font-semibold">Rs. {car.pricePerDay}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Number of days</span>
@@ -376,7 +376,7 @@ const Booking = () => {
                 </div>
                 <div className="border-t border-primary-200 pt-3 flex justify-between">
                   <span className="text-lg font-bold text-gray-800">Total</span>
-                  <span className="text-2xl font-bold text-primary-600">₹{totalPrice}</span>
+                  <span className="text-2xl font-bold text-primary-600">Rs. {totalPrice}</span>
                 </div>
               </div>
             </div>

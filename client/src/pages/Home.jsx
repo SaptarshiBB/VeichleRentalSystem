@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaCar, FaCheckCircle, FaClock, FaShieldAlt, FaArrowRight, FaUserCircle } from 'react-icons/fa';
+import { FaCar, FaCheckCircle, FaClock, FaShieldAlt, FaArrowRight, FaUserCircle, FaHandPaper } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import FAQ from '../components/FAQ';
 
@@ -36,17 +36,20 @@ const Home = () => {
                   <FaUserCircle className="text-3xl text-accent-300" />
                   <div className="text-left">
                     <p className="text-sm text-gray-200">Welcome back,</p>
-                    <p className="text-xl font-bold text-white">{user.name}! 👋</p>
+                    <p className="text-xl font-bold text-white flex items-center gap-2">
+                      <span>{user.name}!</span>
+                      <FaHandPaper className="text-accent-300" />
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-shadow">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow leading-tight">
               Rent Your Perfect Vehicle
               <span className="block text-accent-300 mt-2">Across India</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl mx-auto leading-relaxed">
               From cars to buses, find and book your ideal vehicle instantly. Experience seamless rentals with real-time availability across India.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">

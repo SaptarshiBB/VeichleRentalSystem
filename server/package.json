@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon --ignore .env --ignore .env.example server.js",
     "seed": "node seed/seedCars.js"
   },
   "keywords": [

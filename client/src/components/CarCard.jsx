@@ -88,7 +88,7 @@ const CarCard = ({ car }) => {
         <div className="flex items-center justify-between">
           <div>
             <span className="text-2xl font-bold text-primary-600">
-              ₹{currentCar.pricePerDay}
+              Rs. {currentCar.pricePerDay}
             </span>
             <span className="text-sm text-gray-500">/day</span>
           </div>

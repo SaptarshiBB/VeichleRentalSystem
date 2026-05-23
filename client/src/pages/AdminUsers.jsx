@@ -32,42 +32,42 @@ const AdminUsers = () => {
   };
 
   const handleRoleChange = async (userId, newRole) => {
-    console.log('🔧 handleRoleChange called!', { userId, newRole });
+    console.log('handleRoleChange called', { userId, newRole });
     
     if (!window.confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
-      console.log('❌ User cancelled role change');
+      console.log('User cancelled role change');
       return;
     }
 
-    console.log('✅ User confirmed role change');
+    console.log('User confirmed role change');
     setError('');
     setSuccess('');
 
     try {
-      console.log('📤 Sending API request to update user role...');
+      console.log('Sending API request to update user role...');
       console.log('Updating user role:', userId, 'to', newRole);
       console.log('API URL:', `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/admin/users/${userId}/role`);
       
       const response = await updateUserRole(userId, newRole);
       
-      console.log('✅ Role update response:', response);
+      console.log('Role update response:', response);
       
-      setSuccess(`✅ User role updated to ${newRole} successfully!`);
+      setSuccess(`User role updated to ${newRole} successfully!`);
       setError('');
       
       // Refresh the user list
-      console.log('🔄 Refreshing user list...');
+      console.log('Refreshing user list...');
       await fetchUsers();
-      console.log('✅ User list refreshed');
+      console.log('User list refreshed');
       
       setTimeout(() => setSuccess(''), 5000);
     } catch (err) {
-      console.error('❌ Role update error:', err);
+      console.error('Role update error:', err);
       console.error('Error response:', err.response);
       console.error('Error message:', err.message);
       
       const errorMessage = err.response?.data?.message || err.message || 'Failed to update user role';
-      setError(`❌ Error: ${errorMessage}`);
+      setError(`Error: ${errorMessage}`);
       setSuccess('');
       
       // Show alert for debugging
@@ -120,7 +120,7 @@ const AdminUsers = () => {
               to="/admin"
               className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
             >
-              ← Back to Dashboard
+              Back to Dashboard
             </Link>
           </div>
         </div>

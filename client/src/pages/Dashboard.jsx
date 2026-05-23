@@ -142,7 +142,7 @@ const Dashboard = () => {
                       <div className="mt-3 pt-3 border-t flex items-center justify-between">
                         <span className="text-gray-600">Total Amount</span>
                         <span className="text-xl font-bold text-primary-600">
-                          ₹{booking.totalPrice}
+                          Rs. {booking.totalPrice}
                         </span>
                       </div>
 

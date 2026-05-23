@@ -1495,17 +1495,23 @@ export const cars = [
   }
 ];
 export const bookings = [];
+export const activityLogs = [];
+export const contactMessages = [];
 
 // Helper functions
 let userIdCounter = 1;
 let bookingIdCounter = 1;
+let activityLogIdCounter = 1;
+let contactMessageIdCounter = 1;
+
+const toStoredEmail = (email) => email.trim().toLowerCase();
 
 export const createUser = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 10);
   const user = {
     _id: String(userIdCounter++),
     name: userData.name,
-    email: userData.email,
+    email: toStoredEmail(userData.email),
     password: hashedPassword,
     phone: userData.phone,
     role: userData.role || 'user',
@@ -1516,7 +1522,7 @@ export const createUser = async (userData) => {
 };
 
 export const findUserByEmail = (email) => {
-  return users.find(u => u.email === email);
+  return users.find(u => u.email === toStoredEmail(email));
 };
 
 export const findUserById = (id) => {
@@ -1535,6 +1541,8 @@ export const createBooking = (bookingData) => {
   const booking = {
     _id: String(bookingIdCounter++),
     ...bookingData,
+    startDate: new Date(bookingData.startDate),
+    endDate: new Date(bookingData.endDate),
     createdAt: new Date()
   };
   bookings.push(booking);
@@ -1552,8 +1560,63 @@ export const findBookingsByUser = (userId) => {
 export const updateBooking = (id, updates) => {
   const index = bookings.findIndex(b => b._id === id);
   if (index !== -1) {
-    bookings[index] = { ...bookings[index], ...updates };
+    bookings[index] = { ...bookings[index], ...updates, updatedAt: new Date() };
     return bookings[index];
   }
   return null;
+};
+
+export const deleteBooking = (id) => {
+  const index = bookings.findIndex(b => b._id === id);
+  if (index === -1) {
+    return false;
+  }
+  bookings.splice(index, 1);
+  return true;
+};
+
+export const findBookings = (query = {}) => {
+  return bookings.filter((booking) => {
+    if (query.user && booking.user !== query.user) return false;
+    if (query.car && booking.car !== query.car) return false;
+    if (query.status?.$in && !query.status.$in.includes(booking.status)) return false;
+    if (query.paymentStatus && booking.paymentStatus !== query.paymentStatus) return false;
+    return true;
+  });
+};
+
+export const createActivityLog = (logData) => {
+  const log = {
+    _id: String(activityLogIdCounter++),
+    ...logData,
+    timestamp: new Date()
+  };
+  activityLogs.push(log);
+  return log;
+};
+
+export const createContactMessage = (messageData) => {
+  const message = {
+    _id: String(contactMessageIdCounter++),
+    ...messageData,
+    createdAt: new Date()
+  };
+  contactMessages.push(message);
+  return message;
+};
+
+export const seedDefaultUsers = async () => {
+  const email = process.env.DEFAULT_ADMIN_EMAIL;
+  const password = process.env.DEFAULT_ADMIN_PASSWORD;
+
+  if (email && password && !findUserByEmail(email)) {
+    await createUser({
+      name: process.env.DEFAULT_ADMIN_NAME || 'Admin User',
+      email,
+      password,
+      phone: process.env.DEFAULT_ADMIN_PHONE || '9999999999',
+      role: 'admin'
+    });
+    console.log(`Seeded default admin user: ${toStoredEmail(email)}`);
+  }
 };

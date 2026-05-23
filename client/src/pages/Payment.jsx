@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { bookingsAPI } from '../services/api';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaCar, FaCheckCircle, FaCreditCard, FaLock, FaMobileAlt, FaTimesCircle, FaWallet } from 'react-icons/fa';
 
 const Payment = () => {
   const { bookingId } = useParams();
@@ -125,7 +125,7 @@ const Payment = () => {
                   <h3 className="text-lg font-bold text-gray-800">
                     {booking.car.brand} {booking.car.model}
                   </h3>
-                  <p className="text-sm text-gray-600">{booking.car.type} • {booking.car.year}</p>
+                  <p className="text-sm text-gray-600">{booking.car.type} - {booking.car.year}</p>
                   <p className="text-sm text-gray-600">{booking.car.location}</p>
                 </div>
               </div>
@@ -145,11 +145,11 @@ const Payment = () => {
                 </div>
                 <div className="flex justify-between pt-2 border-t">
                   <span className="text-gray-600">Rate per day:</span>
-                  <span className="font-semibold">₹{booking.car.pricePerDay}</span>
+                  <span className="font-semibold">Rs. {booking.car.pricePerDay}</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold text-primary-600 pt-2 border-t">
                   <span>Total Amount:</span>
-                  <span>₹{booking.totalPrice}</span>
+                  <span>Rs. {booking.totalPrice}</span>
                 </div>
               </div>
             </div>
@@ -159,7 +159,7 @@ const Payment = () => {
           <div className="bg-white rounded-xl shadow-2xl p-8">
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-4">
-                <span className="text-3xl">💳</span>
+                <FaCreditCard className="text-3xl text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Razorpay Payment</h2>
               <p className="text-gray-600 text-sm">Scan QR code or click Pay Now</p>
@@ -180,7 +180,7 @@ const Payment = () => {
                   </div>
                   {/* Center Logo */}
                   <div className="relative z-10 bg-white p-2 rounded">
-                    <span className="text-2xl">🚗</span>
+                    <FaCar className="text-2xl text-primary-600" />
                   </div>
                 </div>
                 <p className="text-center text-sm text-gray-600 mt-4">
@@ -191,7 +191,7 @@ const Payment = () => {
               {/* Amount Display */}
               <div className="bg-white rounded-lg p-4 mt-4 text-center">
                 <p className="text-sm text-gray-600">Amount to Pay</p>
-                <p className="text-3xl font-bold text-primary-600">₹{booking.totalPrice}</p>
+                <p className="text-3xl font-bold text-primary-600">Rs. {booking.totalPrice}</p>
               </div>
             </div>
 
@@ -233,22 +233,25 @@ const Payment = () => {
                   <span>Processing Payment...</span>
                 </span>
               ) : (
-                '💰 Pay Now'
+                <span className="inline-flex items-center justify-center gap-2">
+                  <FaWallet />
+                  <span>Pay Now</span>
+                </span>
               )}
             </button>
 
             <p className="text-xs text-center text-gray-500 mt-4">
-              🔒 This is a demo payment. No real money will be charged.
+              This is a demo payment. No real money will be charged.
             </p>
 
             {/* Supported Apps */}
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-600 mb-2">Supported UPI Apps:</p>
               <div className="flex justify-center space-x-3">
-                <span className="text-2xl" title="Google Pay">📱</span>
-                <span className="text-2xl" title="PhonePe">💜</span>
-                <span className="text-2xl" title="Paytm">💙</span>
-                <span className="text-2xl" title="BHIM">🇮🇳</span>
+                <FaMobileAlt className="text-2xl text-gray-700" title="Google Pay" />
+                <FaMobileAlt className="text-2xl text-purple-700" title="PhonePe" />
+                <FaMobileAlt className="text-2xl text-blue-700" title="Paytm" />
+                <FaLock className="text-2xl text-green-700" title="BHIM" />
               </div>
             </div>
           </div>

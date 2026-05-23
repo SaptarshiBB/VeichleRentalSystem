@@ -1,6 +1,8 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import ContactMessage from '../models/ContactMessage.js';
+import { usingMemoryStore } from '../config/database.js';
+import { createContactMessage } from '../data/store.js';
 
 const router = express.Router();
 
@@ -27,16 +29,19 @@ router.post(
 
       const { name, email, subject, message } = req.body;
 
-      // Save message to database
-      const contactMessage = new ContactMessage({
+      const contactMessage = {
         name,
         email,
         subject,
         message,
         status: 'unread'
-      });
+      };
 
-      await contactMessage.save();
+      if (usingMemoryStore()) {
+        createContactMessage(contactMessage);
+      } else {
+        await new ContactMessage(contactMessage).save();
+      }
 
       res.json({
         success: true,

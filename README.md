@@ -5,11 +5,13 @@ A full-stack vehicle rental platform for India built with **Vite + React**, **Ta
 ## 🚀 Key Features
 
 ### 🔐 User Management
+
 - ✅ **User Registration & Validation** - Complete registration with email, phone (10-digit Indian format), and password validation
 - ✅ **JWT Authentication** - Secure token-based authentication system
 - ✅ **User Dashboard** - View booking history, profile, and payment status.
 
 ### 🚗 Vehicle Browsing & Filtering
+
 - ✅ **70+ Vehicles** - Cars, SUVs, trucks, buses, and traveller vehicles
 - ✅ **Real-Time Availability** - WebSocket updates for instant availability status
 - ✅ **Advanced Filtering**:
@@ -20,50 +22,59 @@ A full-stack vehicle rental platform for India built with **Vite + React**, **Ta
   - **Search** by brand or model name
 
 ### 📅 Booking System
+
 - ✅ **Date Selection** - Calendar-based rental duration picker
 - ✅ **Location Selection** - Choose pickup and return locations
 - ✅ **Price Calculation** - Automatic total price calculation based on rental days
 - ✅ **Booking Management** - View, track, and cancel bookings
 
 ### 💳 Payment & Security
+
 - ✅ **PayPal Integration** - Secure payment processing
 - ✅ **Payment Verification** - Order tracking and verification
 - ✅ **Encrypted Passwords** - bcrypt password hashing
 - ✅ **Protected Routes** - Role-based access control
 
 ### 🌍 Indian Localization
+
 - ✅ **Indian Rupees (₹)** - All prices in INR
 - ✅ **30+ Indian Cities** - Mumbai, Delhi, Bengaluru, Chennai, and more
 - ✅ **Indian Vehicles** - Popular Indian brands (Maruti, Tata, Mahindra, etc.)
 - ✅ **Indian Phone Validation** - 10-digit number format
 
 ### 🎨 User Experience
+
 - ✅ **Responsive Design** - Works seamlessly on mobile, tablet, and desktop
 - ✅ **Premium UI** - Modern design with car rental background imagery
 - ✅ **Real-time Updates** - Live availability status with visual indicators
 - ✅ **Smooth Animations** - Enhanced user interactions
 
-> 📖 **For detailed feature documentation, see [FEATURES.md](./FEATURES.md)**
+> 📖 **For detailed feature documentation, see the project README below.**
 
 ## 📁 Project Structure
 
 ```
-ca5thsem/
+VehicleRentalSystem/
 ├── client/                 # Frontend (Vite + React + Tailwind)
+│   ├── public/             # Static assets and images
 │   ├── src/
 │   │   ├── components/    # Reusable components
-│   │   ├── pages/         # Page components
 │   │   ├── context/       # React context providers
+│   │   ├── pages/         # Page components
 │   │   ├── services/      # API and WebSocket services
 │   │   ├── App.jsx        # Main app component
 │   │   └── main.jsx       # Entry point
 │   ├── package.json
-│   └── vite.config.js
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── postcss.config.js
 │
 └── server/                # Backend (Node.js + Express + MongoDB)
+    ├── config/            # Database and environment config
+    ├── data/              # Local data store and seed data
+    ├── middleware/        # Auth & validation middleware
     ├── models/            # MongoDB schemas
     ├── routes/            # API routes
-    ├── middleware/        # Auth & validation
     ├── websocket/         # WebSocket server
     ├── seed/              # Database seeding
     ├── server.js          # Main server file
@@ -81,7 +92,7 @@ ca5thsem/
 ### 1. Clone the Repository
 
 ```bash
-cd ca5thsem
+cd VehicleRentalSystem
 ```
 
 ### 2. Backend Setup
@@ -163,23 +174,27 @@ Frontend will run on `http://localhost:5173`
 ## 📡 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 - `GET /api/auth/me` - Get current user
 
 ### Cars
+
 - `GET /api/cars` - Get all cars (with filters)
 - `GET /api/cars/:id` - Get single car
 - `POST /api/cars` - Create car (admin)
 - `PUT /api/cars/:id` - Update car (admin)
 
 ### Bookings
+
 - `POST /api/bookings` - Create booking
 - `GET /api/bookings/user/:userId` - Get user bookings
 - `PUT /api/bookings/:id` - Update booking
 - `DELETE /api/bookings/:id` - Cancel booking
 
 ### Payment
+
 - `POST /api/payment/create-order` - Create PayPal order
 - `POST /api/payment/capture-order` - Capture payment
 - `GET /api/payment/verify/:orderId` - Verify payment
@@ -195,6 +210,7 @@ Frontend will run on `http://localhost:5173`
 ## 🎨 Tech Stack
 
 ### Frontend
+
 - **React 18** - UI library
 - **Vite** - Build tool
 - **Tailwind CSS** - Styling
@@ -204,6 +220,7 @@ Frontend will run on `http://localhost:5173`
 - **WebSocket** - Real-time updates
 
 ### Backend
+
 - **Node.js** - Runtime
 - **Express** - Web framework
 - **MongoDB** - Database
@@ -233,11 +250,13 @@ Frontend will run on `http://localhost:5173`
 ## 🚀 Deployment
 
 ### Backend
+
 - Deploy to Heroku, Railway, or DigitalOcean
 - Use MongoDB Atlas for production database
 - Set environment variables
 
 ### Frontend
+
 - Deploy to Vercel, Netlify, or Cloudflare Pages
 - Update API URLs in environment variables
 

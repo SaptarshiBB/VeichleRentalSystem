@@ -8,6 +8,16 @@ const clients = new Map();
 export const initWebSocket = (server) => {
   wss = new WebSocketServer({ server });
 
+  wss.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const port = process.env.PORT || 5000;
+      console.error(`Port ${port} is already in use. The backend is probably already running at http://localhost:${port}`);
+      process.exit(0);
+    }
+
+    console.error('WebSocket server error:', err);
+  });
+
   wss.on('connection', (ws, req) => {
     console.log('🔌 New WebSocket connection');
 

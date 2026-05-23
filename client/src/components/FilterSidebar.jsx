@@ -123,7 +123,7 @@ const FilterSidebar = ({ onFilterChange, isMobile = false }) => {
       {/* Price Range */}
       <div className="mb-0">
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Price Range (₹/day)
+          Price Range (Rs./day)
         </label>
         <div className="grid grid-cols-2 gap-3">
           <input
