@@ -6,7 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import { initWebSocket } from './websocket/index.js';
-import { seedDefaultUsers } from './data/store.js';
+import { seedDefaultAdmin } from './seed/defaultAdmin.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -30,7 +30,7 @@ const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,http:/
 
 // Connect to MongoDB
 await connectDB();
-await seedDefaultUsers();
+await seedDefaultAdmin();
 
 // Initialize WebSocket
 initWebSocket(server);
